@@ -37,3 +37,77 @@ exports.addToWatchlist = async (req,res)=>{
    }
 };
 
+
+exports.getAllWatchlist =async (req,res)=>{
+    try {
+
+        const userId = req.user.userId;
+        
+    
+    if(!userId){
+        return res.status(400).json({
+            success: false,
+            message:'No user id found'
+        })
+    }
+
+
+    const watchlist = await Watchlist.find({user:userId})
+    .populate('movie')
+    .sort({createdAt : -1})
+
+    console.log('watchlist',watchlist);
+    
+
+    res.status(200).json({
+        success: true,
+        message:'Watchlist fetched',
+        total:watchlist.length,
+        watchlist
+    })
+    } catch (error) {
+        res.status(400).json({
+            success:false,
+            message:error.message
+        })
+    }
+
+}
+
+exports.removeFromWatchlist = async (req,res)=>{
+    try {
+        
+        const {id} = req.params;
+        const userId = req.user.userId;
+
+
+        if(!id){
+            return res.status(400).json({
+                success:false,
+                message: 'no Movie id found'
+            })
+        }
+
+        const movie = await Watchlist.findOneAndDelete({user:userId,_id:id}
+)
+        
+
+        if(!movie){
+            return res.status(400).json({
+                success :false,
+                message:'No movie found'
+            })
+        }
+        
+
+        res.status(200).json({
+            success:true,
+            message:'Movie removed from watchlist'
+        })
+    } catch (error) {
+        res.status(400).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
