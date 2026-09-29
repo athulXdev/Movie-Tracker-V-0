@@ -11,7 +11,7 @@ const reviewSchema = mongoose.Schema({
         ref : "Movie",
         required : true
     },
-    review : {
+    comment : {
         type : String,
         maxlength : 500
     },
@@ -29,6 +29,8 @@ const reviewSchema = mongoose.Schema({
     timestamps : true
 })
 
-const Review = mongoose.model('Review',reviewSchema);
+reviewSchema.index({user:1 , movie : 1} ,{unique:true});
 
+
+const Review = mongoose.model('Review',reviewSchema)
 module.exports = Review;
