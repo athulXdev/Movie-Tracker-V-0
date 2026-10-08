@@ -1,14 +1,10 @@
-
-import './App.css'
-
+// frontend/src/App.jsx
 function App() {
-
-
-  return (
-    <>
-    
-    </>
-  )
+    return (
+        <div className="container mt-5">
+            <h1>Movie Tracker</h1>
+        </div>
+    );
 }
 
-export default App
+export default App;

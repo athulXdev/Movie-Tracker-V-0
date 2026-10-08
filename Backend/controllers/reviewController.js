@@ -1,10 +1,19 @@
 const Review = require('../models/reviewModel');
-const Movie = require("../models/movieModel")
+const Movie = require("../models/movieModel");
+const User = require('../models/userModel');
 
 exports.addAndUpdateComment = async (req,res)=>{
     try {
         const {movieId , comment , isPublic} = req.body
-        const userId = req.user.userId;
+        const userId = req.user.userId; 
+
+        const user = await User.findById(userId)
+        if(user.isBanned){
+            return res.status(500).json({
+                success:false,
+                message:'Banned user cant post comment'
+            })
+        }
 
         if(!movieId){
             return res.status(400).json({

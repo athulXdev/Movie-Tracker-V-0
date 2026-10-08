@@ -23,7 +23,31 @@ exports.userAuthintication = (req,res,next)=>{
         next()
     } catch (error) {
         res.status(500).json({
-            status : false,
+            success : false,
+            message : error.message
+        })
+    }
+}
+
+ exports.userAutherization = (req,res,next)=>{
+    console.log(req.user.userRole);
+    
+    try {
+        if(req.user.userRole !== 'admin'){
+        return res.status(400).json({
+            success:false,
+            message:'No access'
+            
+        })
+
+        
+    }
+
+    next()
+
+    } catch (error) {
+         res.status(500).json({
+            success : false,
             message : error.message
         })
     }

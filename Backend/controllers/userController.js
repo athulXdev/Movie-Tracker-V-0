@@ -58,6 +58,15 @@ exports.userLogin = async (req,res)=>{
             })
         }
 
+        if(userData.isBanned){
+            return res.status(400).json({
+                Success:false,
+                message:`Cant login this account has been banned . Reason: ${userData.banReason}`
+            })
+        }
+        console.log(userData.isBanned  );
+        
+
         const isPasswordMatched = await bcrypt.compare(password,userData.password);
 
         // console.log(isPasswordMatched);
