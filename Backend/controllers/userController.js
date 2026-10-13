@@ -33,6 +33,28 @@ exports.userRegister = async (req,res)=>{
     }
 }
 
+exports.getCurrentUser = async (req,res)=>{
+    try {
+        const user =await  User.findById(req.user.userId).select('-password') 
+        if(!user){
+            return res.status(404).json({
+                Success:false,
+                message:'User not found'
+            })
+        }
+        res.status(200).json({
+            Success:true,
+            user
+        })
+    } catch (error) {
+        res.status(500).json({
+            Success:false,
+            message:error.message
+        })
+    }
+
+}
+
 exports.userLogin = async (req,res)=>{
     try {
         const {email,password} = req.body;
